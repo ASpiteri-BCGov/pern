@@ -1,9 +1,10 @@
 {
   "name": "perntest1",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start":"echo \"yay I worked!\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "perntest1": "index.js"
   },
@@ -14,7 +15,5 @@
   },
   "bin": {
     "create-penn-stack": "index.js"
-  }
-  
-
+  }  
 }
