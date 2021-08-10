@@ -1,0 +1,154 @@
+# Copyright 2021 The Province of British Columbia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# This role binding is meant to allow the Patroni and backup container
+# deployment pull image from the tools namespace. Run this policy in
+# your tools namespace.
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: $projectname-server
+  annotations:
+    description: Deployment template for a nodejs server and postgres db.
+    tags: node
+    iconClass: icon-node
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        shared: "true"
+      name: "$projectname-server"
+    spec:
+      lookupPolicy:
+        local: true
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: $projectname-server
+      annotations:
+        description: Exposes and load balances the application pods
+      labels:
+        app: $projectname-server
+    spec:
+      ports:
+        - name: 8080-tcp
+          port: 8080
+          targetPort: 8080
+      selector:
+        deploymentconfig: $projectname-server
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: "$projectname-server"
+      labels:
+        app: "$projectname-server"
+    spec:
+      host: "$projectname-server.apps.silver.devops.gov.bc.ca"
+      port:
+        targetPort: 8080
+      path: ""
+      to:
+        kind: Service
+        name: "$projectname-server"
+        weight: 100
+      tls:
+        termination: edge
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: $projectname-server
+      labels:
+        app: $projectname-server
+      annotations:
+        description: Defines how to deploy the application server
+    spec:
+      strategy:
+        type: Rolling
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - $projectname-server
+            from:
+              kind: ImageStreamTag
+              name: "$projectname-server:1.0"
+        - type: ConfigChange
+      replicas: 1
+      selector:
+        name: $projectname-server
+      template:
+        metadata:
+          name: $projectname-server
+          labels:
+            name: $projectname-server
+            app: $projectname-server
+        spec:
+          containers:
+            - name: $projectname-server
+              image: " "
+              ports:
+                - name: $projectname-server
+                  containerPort: 8080
+                  protocol: TCP
+              #              livenessProbe:
+              #                failureThreshold: 3
+              #                httpGet:
+              #                  path: /
+              #                  port: ${{PORT}}
+              #                  scheme: HTTP
+              #                initialDelaySeconds: 60
+              #                periodSeconds: 10
+              #                successThreshold: 1
+              #                timeoutSeconds: 3
+              #              readinessProbe:
+              #                failureThreshold: 3
+              #                httpGet:
+              #                  path: /
+              #                  port: ${{PORT}}
+              #                  scheme: HTTP
+              #                initialDelaySeconds: 25
+              #                periodSeconds: 10
+              #                successThreshold: 1
+              #                timeoutSeconds: 2
+              resources:
+                requests:
+                  memory: 256Mi
+                  cpu: 500m
+                limits:
+                  memory: 512Mi
+                  cpu: 1
+              env:
+                - name: host
+                  value: patroni-master
+                - name: port
+                  value: "5432"
+                - name: database
+                  valueFrom:
+                    secretKeyRef:
+                      key: app-db-name
+                      name: patroni
+                - name: user
+                  valueFrom:
+                    secretKeyRef:
+                      key: app-db-username
+                      name: patroni
+                - name: password
+                  valueFrom:
+                    secretKeyRef:
+                      key: app-db-password
+                      name: patroni

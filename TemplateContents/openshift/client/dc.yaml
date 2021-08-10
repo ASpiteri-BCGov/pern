@@ -1,0 +1,137 @@
+# Copyright 2021 The Province of British Columbia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# This role binding is meant to allow the Patroni and backup container
+# deployment pull image from the tools namespace. Run this policy in
+# your tools namespace.
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: $projectname-client
+  annotations:
+    description: Deployment template for a nodejs server and postgres db.
+    tags: node
+    iconClass: icon-node
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        shared: "true"
+      name: $projectname-client
+    spec:
+      lookupPolicy:
+        local: true
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: "$projectname-client"
+      annotations:
+        description: Exposes and load balances the application pods
+      labels:
+        app: "$projectname-client"
+    spec:
+      ports:
+        - name: 8080-tcp
+          port: 8080
+          targetPort: 8080
+      selector:
+        deploymentconfig: "$projectname-client"
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: "$projectname-client"
+      labels:
+        app: "$projectname-client"
+    spec:
+      host: "$projectname-client.apps.silver.devops.gov.bc.ca"
+      port:
+        targetPort: 8080
+      path: ""
+      to:
+        kind: Service
+        name: "$projectname-client"
+        weight: 100
+      tls:
+        termination: edge
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: "$projectname-client"
+      labels:
+        app: "$projectname-client"
+      annotations:
+        description: Defines how to deploy the application server
+    spec:
+      strategy:
+        type: Rolling
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - $projectname-client
+            from:
+              kind: ImageStreamTag
+              name: "$projectname-client:1.0"
+        - type: ConfigChange
+      replicas: 1
+      selector:
+        name: "$projectname-client"
+      template:
+        metadata:
+          name: "$projectname-client"
+          labels:
+            name: "$projectname-client"
+            app: "$projectname-client"
+        spec:
+          containers:
+            - name: "$projectname-client"
+              image: " "
+              ports:
+                - name: "$projectname-client"
+                  containerPort: 8080
+                  protocol: TCP
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 3
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 25
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 2
+              resources:
+                requests:
+                  memory: 256Mi
+                  cpu: 500m
+                limits:
+                  memory: 512Mi
+                  cpu: 1
+              env:
+                - name: PORT
+                  value: "8080"
