@@ -10,7 +10,7 @@ const consoleError = "\x1b[31m";
 const consoleClear = "\x1b[0m";
 
 readline.question(
-  "What should we call your first database table? \n The database table name can only contain letters[Aa] and numbers[123]\n",
+  "What should we call your first database table? \n\n \x1b[1m \x1b[34m TIP****\n The database table name can only contain letters[Aa] and numbers[123] \n   TIP***\n\n\x1b[0m",
   (projectname) => {
     if (!projectname.match(/^[a-zA-Z0-9_-\s]*$/)) {
       console.log(

@@ -15,7 +15,7 @@ const readline = require("readline").createInterface({
 readline.stdoutMuted = true;
 
 readline.question(
-  "What is the name of your project? \n The project name can only contain letters[Aa], numbers[123], dashes[-], underscores[_] and spaces[ ] \n",
+  "What is the name of your project? \n\n \x1b[1m \x1b[34m TIP****\n The project name can only contain letters[Aa], numbers[123], dashes[-], underscores[_] and spaces[ ] \n   TIP***\n\n\x1b[0m",
   (projectname) => {
     /*Check if name contains quotes*/
     if (!projectname.match(/^[a-zA-Z0-9_-\s]*$/)) {
@@ -30,12 +30,12 @@ readline.question(
     }
 
     readline.question(
-      "What do you want to name your database? \n The database name can only contain letters[Aa], numbers[123], dashes[-] and underscores[_]\n",
+      "Enter a name for this projects first Database? \n\n \x1b[1m \x1b[34m TIP****\n The database name can only contain letters[Aa], numbers[123], dashes[-] and underscores[_]\n   TIP***\n\n\x1b[0m",
       (dbname) => {
         if (!dbname.match(/^[a-z0-9_-]*$/)) {
           console.log(
             consoleError,
-            "The database name can only contain lowercase letters[ab], numbers[123], dashes[-] and underscores[_]\n",
+            "The Database name can only contain lowercase letters[ab], numbers[123], dashes[-] and underscores[_]\n",
             consoleClear,
             dbname
           );
@@ -43,13 +43,13 @@ readline.question(
           process.exit(1);
         }
         readline.question(
-          "What should we call your first database table? \n The database table name can only contain letters[Aa], numbers[123], dashes[-] and underscores[_]\n",
+          "Enter a name for this projects first Database table? \n\n \x1b[1m \x1b[34m TIP****\n The database table name can only contain letters[Aa] and numbers[123] \n   TIP***\n\n\x1b[0m",
           (dbtname) => {
             //Check if name contains quotes
             if (!dbtname.match(/^[a-z0-9_-]*$/)) {
               console.log(
                 consoleError,
-                "The database table name can only contain lowercase letters[ab], numbers[123], dashes[-] and underscores[_]",
+                "The Database table name can only contain lowercase letters[ab], numbers[123], dashes[-] and underscores[_]",
                 consoleClear,
                 dbtname
               );
