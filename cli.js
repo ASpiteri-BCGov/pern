@@ -31,7 +31,7 @@ readline.question(
     }
 
     readline.question(
-      "\n\n Enter a name for this projects first Database? \n\n \x1b[1m \x1b[34m TIP****\n The database name can only contain letters[Aa], numbers[123], dashes[-] and underscores[_]\n   TIP***\n\n\x1b[0m",
+      "\n\n Enter a name for this projects first Database? \n\n \x1b[1m \x1b[34m TIP****\n The database name can only contain lowercase letters[ab], numbers[123], dashes[-] and underscores[_]\n   TIP***\n\n\x1b[0m",
       (dbname) => {
         if (!dbname.match(/^[a-z0-9_-]*$/)) {
           console.log(
