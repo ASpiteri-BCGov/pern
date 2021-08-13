@@ -6,6 +6,7 @@ const fs = require("fs");
 const consoleSuccess = "\x1b[32m";
 const consoleError = "\x1b[31m";
 const consoleClear = "\x1b[0m";
+const consoleBright = "\x1b[1m \x1b[34m";
 
 const readline = require("readline").createInterface({
   input: process.stdin,
@@ -570,7 +571,20 @@ readline.question(
                 });
                 /*===========END==========================add openshift/knp.yml"=====================================*/
 
+                child_process.execSync(`cd server && npm i`, {
+                  stdio: [0, 1, 2],
+                });
+
                 /**Last question */
+
+                console.log(
+                  consoleSuccess,
+                  "Everything was a success!",
+                  consoleClear,
+                  "\n\n run the following commands to get started: \n\n",
+                  consoleBright,
+                  "cd server \n nodemon index \n cd.. \n cd client \n npm start"
+                );
               }
             );
           }
