@@ -1,6 +1,6 @@
 {
   "name": "perntest1",
-  "version": "1.0.5",
+  "version": "1.0.97",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,6 @@
     "pg": "^8.7.1"
   },
   "bin": {
-    "create-penn-stack": "index.js"
+    "create-penn-stack": "cli.js"
   }
 }
