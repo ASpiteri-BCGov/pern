@@ -1,37 +1,37 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import EditTodo from "./EditTodo";
+import EditExample from "./EditExample";
 
 const ListExample = () => {
-  const [items, setTodos] = useState([]);
+  const [items, setExamples] = useState([]);
 
-  //delete todo function
+  //delete example function
 
-  const deleteTodo = async (id) => {
+  const deleteitem = async (id) => {
     try {
-      const deleteTodo = await fetch(`http://localhost:5000/items/${id}`, {
+      const deleteExample = await fetch(`http://localhost:5000/items/${id}`, {
         method: "DELETE",
       });
 
-      setTodos(items.filter((todo) => todo.todo_id !== id));
+      setExamples(items.filter((example) => example.example_id !== id));
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  const getTodos = async () => {
+  const getExamples = async () => {
     try {
       const response = await fetch("http://localhost:5000/items");
       const jsonData = await response.json();
 
-      setTodos(jsonData);
+      setExamples(jsonData);
     } catch (err) {
       console.error(err.message);
     }
   };
 
   useEffect(() => {
-    getTodos();
+    getExamples();
   }, []);
 
   console.log(items);
@@ -53,16 +53,16 @@ const ListExample = () => {
             <td>Doe</td>
             <td>john@example.com</td>
           </tr> */}
-          {items.map((todo) => (
-            <tr key={todo.todo_id}>
-              <td>{todo.description}</td>
+          {items.map((item) => (
+            <tr key={item["${dbtname}"]}>
+              <td>{item.description}</td>
               <td>
-                <EditTodo todo={todo} />
+                <Edititem item={item} />
               </td>
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteTodo(todo.todo_id)}
+                  onClick={() => deleteitem(item["${dbtname}"])}
                 >
                   Delete
                 </button>

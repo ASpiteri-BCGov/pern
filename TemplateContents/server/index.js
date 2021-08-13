@@ -36,7 +36,7 @@ app.get("/items", async (req, res) => {
   }
 });
 
-//get a todo
+//get a example
 
 app.get("/items/:id", async (req, res) => {
   try {
@@ -52,7 +52,7 @@ app.get("/items/:id", async (req, res) => {
   }
 });
 
-//update a todo
+//update a example
 
 app.put("/items/:id", async (req, res) => {
   try {
@@ -69,16 +69,16 @@ app.put("/items/:id", async (req, res) => {
   }
 });
 
-//delete a todo
+//delete a example
 
 app.delete("/items/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteTodo = await pool.query(
+    const deleteExample = await pool.query(
       `DELETE FROM $dbtname WHERE $dbtname_id = $1`,
       [id]
     );
-    res.json(`item was deleted ==> ${deleteTodo}`);
+    res.json(`item was deleted ==> ${deleteExample}`);
   } catch (err) {
     console.log(err.message);
   }

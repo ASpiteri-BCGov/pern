@@ -1,6 +1,6 @@
-CREATE DATABASE perntodo;
+CREATE DATABASE pernexample;
 
-CREATE TABLE todo(
-  todo_id SERIAL PRIMARY KEY,
+CREATE TABLE example(
+  example_id SERIAL PRIMARY KEY,
   description VARCHAR(255)
 );

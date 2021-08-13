@@ -10,7 +10,7 @@ const EditExample = ({ item }) => {
     try {
       const body = { description };
       const response = await fetch(
-        `http://localhost:5000/items/${item.item_id}`,
+        `http://localhost:5000/items/${item["${dbtname}"]}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ const EditExample = ({ item }) => {
         type="button"
         class="btn btn-warning"
         data-toggle="modal"
-        data-target={`#id${item.item_id}`}
+        data-target={`#id${item["${dbtname}"]}`}
       >
         Edit
       </button>
@@ -40,13 +40,13 @@ const EditExample = ({ item }) => {
       */}
       <div
         class="modal"
-        id={`id${item.item_id}`}
+        id={`id${item["${dbtname}"]}`}
         onClick={() => setDescription(item.description)}
       >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Todo</h4>
+              <h4 class="modal-title">Edit Example</h4>
               <button
                 type="button"
                 class="close"

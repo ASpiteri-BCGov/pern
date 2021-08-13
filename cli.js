@@ -7,6 +7,7 @@ const consoleSuccess = "\x1b[32m";
 const consoleError = "\x1b[31m";
 const consoleClear = "\x1b[0m";
 const consoleBright = "\x1b[1m \x1b[34m";
+const child_process = require("child_process");
 
 const readline = require("readline").createInterface({
   input: process.stdin,
@@ -14,6 +15,8 @@ const readline = require("readline").createInterface({
 });
 
 readline.stdoutMuted = true;
+
+child_process.execSync(`cls`);
 
 readline.question(
   "\n\n What is the name of your project? \n\n \x1b[1m \x1b[34m TIP****\n The project name can only contain letters[Aa], numbers[123], dashes[-], underscores[_] and spaces[ ] \n   TIP***\n\n\x1b[0m",
@@ -103,7 +106,6 @@ readline.question(
                 /*****END*********Create a database**************/
                 /*============START=========================Create Nextjs app=====================================*/
 
-                const child_process = require("child_process");
                 //You can alos put creat-next-app
                 child_process.execSync(
                   `npx create-react-app client --template typescript`,
@@ -197,27 +199,7 @@ readline.question(
                   );
                 });
                 /*===========END==========================Create db config=====================================*/
-                /*===========START==========================Create server package.json and package-lock.json=====================================*/
-
-                const serverPackageLock = path.join(
-                  __dirname,
-                  "TemplateContents/server/package-lock.json"
-                );
-
-                fs.readFile(serverPackageLock, "utf8", function (err, data) {
-                  fs.appendFile(
-                    "server/package-lock.json",
-                    data,
-                    function (err) {
-                      if (err) throw err;
-                      console.log(
-                        consoleSuccess,
-                        "Success server/package-lock.json created!"
-                      );
-                      console.log(consoleClear, ""); //Reset colors
-                    }
-                  );
-                });
+                /*===========START==========================Create server package.json =====================================*/
 
                 const serverPackageJson = path.join(
                   __dirname,
@@ -234,7 +216,8 @@ readline.question(
                   });
                 });
 
-                /*===========END==========================Create server package.json and package-lock.json=====================================*/
+                /*===========END==========================Create server package.json=====================================*/
+
                 /*============START=========================add client components directory=====================================*/
 
                 const clientComponents = "client/src/components";
@@ -250,12 +233,23 @@ readline.question(
                 );
 
                 // START Edit example //
+
                 fs.readFile(Appjs, "utf8", function (err, data) {
                   fs.writeFile("client/src/App.tsx", data, function (err) {
                     if (err) throw err;
                     console.log("App.tsx Created!");
                   });
                 });
+
+                fs.writeFile(
+                  `./openshift/knp.yml`,
+                  databaseReplacements,
+                  (err) => {
+                    if (err) console.error("error" + err);
+
+                    console.warn("successfully created");
+                  }
+                );
 
                 const EditExample = path.join(
                   __dirname,
@@ -264,9 +258,19 @@ readline.question(
 
                 // START Edit example //
                 fs.readFile(EditExample, "utf8", function (err, data) {
+                  const mapObj = {
+                    $dbname: `"${dbname}"`,
+                    $dbtname: `"${dbtname}"`,
+                  };
+
+                  let databaseReplacements = data.replace(
+                    /\$dbname|\$dbtname/gi,
+                    (matched) => mapObj[matched]
+                  );
+
                   fs.appendFile(
                     "client/src/components/EditExample.js",
-                    data,
+                    databaseReplacements,
                     function (err) {
                       if (err) throw err;
                       console.log("EditExample.js Created!");
@@ -300,9 +304,18 @@ readline.question(
                 );
 
                 fs.readFile(ListExample, "utf8", function (err, data) {
+                  const mapObj = {
+                    $dbname: `"${dbname}"`,
+                    $dbtname: `"${dbtname}"`,
+                  };
+
+                  let databaseReplacements = data.replace(
+                    /\$dbname|\$dbtname/gi,
+                    (matched) => mapObj[matched]
+                  );
                   fs.appendFile(
                     "client/src/components/ListExample.js",
-                    data,
+                    databaseReplacements,
                     function (err) {
                       if (err) throw err;
                       console.log("ListExample.js Created!");
@@ -570,12 +583,10 @@ readline.question(
                   );
                 });
                 /*===========END==========================add openshift/knp.yml"=====================================*/
+                /*===========START==========================npm install for server folder=====================================*/
 
-                child_process.execSync(`cd server && npm i`, {
-                  stdio: [0, 1, 2],
-                });
-
-                /**Last question */
+                child_process.exec(`cd server && npm i`);
+                /*===========END==========================npm install for server folder=====================================*/
 
                 console.log(
                   consoleSuccess,
@@ -583,7 +594,12 @@ readline.question(
                   consoleClear,
                   "\n\n run the following commands to get started: \n\n",
                   consoleBright,
-                  "cd server \n nodemon index \n cd.. \n cd client \n npm start"
+                  "cd server \n nodemon index \n",
+                  consoleClear,
+                  "\n and then in a new cmd terminal",
+                  consoleBright,
+                  "cd client \n npm start \n",
+                  consoleClear
                 );
               }
             );
