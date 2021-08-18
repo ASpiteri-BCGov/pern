@@ -92,7 +92,7 @@ readline.question(
                   });
 
                   pool.query(
-                    `CREATE TABLE ${dbtname}(${dbtname}_id SERIAL PRIMARY KEY,description VARCHAR(255));`,
+                    `CREATE TABLE ${dbtname}(${dbtname}item_id SERIAL PRIMARY KEY,description VARCHAR(255));`,
                     (err, res) => {
                       if (err) {
                         console.log(err);
@@ -241,16 +241,6 @@ readline.question(
                   });
                 });
 
-                fs.writeFile(
-                  `./openshift/knp.yml`,
-                  databaseReplacements,
-                  (err) => {
-                    if (err) console.error("error" + err);
-
-                    console.warn("successfully created");
-                  }
-                );
-
                 const EditExample = path.join(
                   __dirname,
                   "TemplateContents/client/src/components/EditExample.js"
@@ -259,12 +249,11 @@ readline.question(
                 // START Edit example //
                 fs.readFile(EditExample, "utf8", function (err, data) {
                   const mapObj = {
-                    $dbname: `"${dbname}"`,
-                    $dbtname: `"${dbtname}"`,
+                    dbtitemid: `${dbtname}item_id`,
                   };
 
                   let databaseReplacements = data.replace(
-                    /\$dbname|\$dbtname/gi,
+                    /dbtitemid/gi,
                     (matched) => mapObj[matched]
                   );
 
@@ -305,12 +294,11 @@ readline.question(
 
                 fs.readFile(ListExample, "utf8", function (err, data) {
                   const mapObj = {
-                    $dbname: `"${dbname}"`,
-                    $dbtname: `"${dbtname}"`,
+                    dbtitemid: `${dbtname}item_id`,
                   };
 
                   let databaseReplacements = data.replace(
-                    /\$dbname|\$dbtname/gi,
+                    /dbtitemid/gi,
                     (matched) => mapObj[matched]
                   );
                   fs.appendFile(
@@ -588,6 +576,24 @@ readline.question(
                 child_process.exec(`cd server && npm i`);
                 /*===========END==========================npm install for server folder=====================================*/
 
+                /*===========START==========================Create index HTML for react app=====================================*/
+
+                const indexHTML = path.join(
+                  __dirname,
+                  "TemplateContents/client/public/index.html"
+                );
+
+                fs.readFile(indexHTML, "utf8", function (err, data) {
+                  fs.writeFile(
+                    "client/public/index.html",
+                    data,
+                    function (err) {
+                      if (err) throw err;
+                      console.log("App.tsx Created!");
+                    }
+                  );
+                });
+
                 console.log(
                   consoleSuccess,
                   "Everything was a success!",
@@ -601,6 +607,8 @@ readline.question(
                   "cd client \n npm start \n",
                   consoleClear
                 );
+
+                /*===========END==========================Create index HTML for react app=====================================*/
               }
             );
           }

@@ -42,7 +42,7 @@ app.get("/items/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const tableItem = await pool.query(
-      `SELECT * FROM $dbtname WHERE $dbtname_id = $1`,
+      `SELECT * FROM $dbtname WHERE $dbtnameitem_id = $1`,
       [id]
     );
 
@@ -59,7 +59,7 @@ app.put("/items/:id", async (req, res) => {
     const { id } = req.params;
     const { description } = req.body;
     const updateTableItem = await pool.query(
-      `UPDATE $dbtname SET description = $1 WHERE $dbtname_id = $2`,
+      `UPDATE $dbtname SET description = $1 WHERE $dbtnameitem_id = $2`,
       [description, id]
     );
 
@@ -75,7 +75,7 @@ app.delete("/items/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteExample = await pool.query(
-      `DELETE FROM $dbtname WHERE $dbtname_id = $1`,
+      `DELETE FROM $dbtname WHERE $dbtnameitem_id = $1`,
       [id]
     );
     res.json(`item was deleted ==> ${deleteExample}`);
