@@ -25,7 +25,7 @@ cd client
 
 npm run start
 
-npx perntest1
+
 ```
 
 ## API
