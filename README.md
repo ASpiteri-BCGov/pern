@@ -29,7 +29,7 @@ npx perntest1
 ```
 
 ## API
-Out of the box the application comes with a pre configured and fully customizable API.
+Out of the box the application comes with a pre configured and a fully customizable API.
 
 #### DELETE
 #### GET
