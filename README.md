@@ -32,9 +32,9 @@ npx perntest1
 Out of the box the application comes with a pre configured and fully customizable API.
 
 #### DELETE
-### GET
-### POST
-### UPDATE
+#### GET
+#### POST
+#### UPDATE
 
 
 
