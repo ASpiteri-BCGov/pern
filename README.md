@@ -35,7 +35,6 @@ If you can’t make it past the question prompts, focus on what the hints say.  
 
 ## Authors
 
-Contributors names and contact info
 
 Adam Spiteri
 
