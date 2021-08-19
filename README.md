@@ -52,5 +52,5 @@ Out of the box the application comes with a pre configured and a fully customiza
 
 * 0.1
     * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
+    
 
