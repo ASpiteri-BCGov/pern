@@ -16,9 +16,13 @@ One command to create a full stack PERN application.
 ### Executing program
 ```
 npx perntest1
+
 cd server
+
 nodemon index
+
 cd client 
+
 npm run start
 
 npx perntest1
