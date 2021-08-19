@@ -10,19 +10,18 @@ One command to create a full stack PERN application.
 * Node 14 or higher
 * PostgreSQL pre-installed
 
-### Installing
 
-npx perntest1
+
 
 ### Executing program
-
-* npx perntest1
-* cd server
-* nodemon index
-* cd client 
-* npm run start
 ```
-code blocks for commands
+npx perntest1
+cd server
+nodemon index
+cd client 
+npm run start
+
+npx perntest1
 ```
 
 ## Help
