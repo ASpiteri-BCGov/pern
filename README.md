@@ -8,7 +8,7 @@ One command to create a full stack PERN application.
 
 ### Dependencies
 * Node 14 or higher
-* [1]: https://www.postgresql.org/download/windows/ "PostgreSQL" 13 or higher pre-installed 
+* [PostgreSQL](https://www.postgresql.org/download/windows/) 13 or higher pre-installed 
 
 
 
