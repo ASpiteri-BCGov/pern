@@ -7,7 +7,7 @@
 One command to create a full stack PERN application.  
 
 ### Dependencies
-* [NODE](https://nodejs.org/en/) 14 or higher 
+* [Node.js](https://nodejs.org/en/) 14 or higher 
 * [PostgreSQL](https://www.postgresql.org/download/windows/) 13 or higher pre-installed 
 
 
