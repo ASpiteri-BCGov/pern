@@ -28,6 +28,14 @@ npm run start
 npx perntest1
 ```
 
+## API
+Out of the box the application comes with a pre configured and fully customizable API.
+
+DELETE
+GET
+POST
+UPDATE
+
 ## Help
 
 * If you can’t make it past the question prompts, focus on what the hints say.  
