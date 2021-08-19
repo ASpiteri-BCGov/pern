@@ -30,7 +30,8 @@ npx perntest1
 
 ## Help
 
-If you can’t make it past the question prompts, focus on what the hints say.  The PostgreSQL password question is asking for the master password of you PostgreSQL environment that you would have configured when installing PostgreSQL on your system.
+* If you can’t make it past the question prompts, focus on what the hints say.  
+* The PostgreSQL password question is asking for the master password of you PostgreSQL environment that you would have configured when installing PostgreSQL on your system.
 
 
 ## Authors
