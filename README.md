@@ -46,8 +46,7 @@ Out of the box the application comes with a pre configured and a fully customiza
 
 ## Authors
 
-
-Adam Spiteri
+[Adam Spiteri](https://github.com/ASpiteri-BCGov) 
 
 ## Version History
 
